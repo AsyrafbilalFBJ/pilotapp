@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
-import type { SchedulesResponse } from '~/types/api'
-
 useHead({ title: 'Schedule · Susi Air Pilot' })
 
-const api = useApi()
 const today = useToday()
 const route = useRoute()
 const router = useRouter()
@@ -14,11 +11,7 @@ const viewMonth = computed(
   () => parseYearMonth(route.query.year, route.query.month) ?? yearMonthOf(today.value),
 )
 
-const schedule = useAsyncData(
-  'schedule-month',
-  () => api<SchedulesResponse>('/schedules', { query: viewMonth.value }),
-  { watch: [viewMonth] },
-)
+const schedule = useMonthlySchedule(viewMonth)
 
 const loading = computed(() => schedule.status.value === 'pending')
 const data = computed(() => schedule.data.value)
@@ -80,9 +73,9 @@ const WEEKDAYS = [
 
         <ul class="legend__duties">
           <li v-for="entry in data.legend" :key="entry.code">
-            <span class="legend__swatch" :style="{ background: entry.color }" aria-hidden="true" />
-            <span>{{ entry.label }}</span>
+            <span class="legend__swatch" :style="{ background: entry.color }" aria-hidden="true"></span>
             <span class="legend__code">{{ entry.code }}</span>
+            <span>{{ entry.label }}</span>
           </li>
         </ul>
 
@@ -183,6 +176,38 @@ const WEEKDAYS = [
   list-style: none;
 }
 
+// Narrow phones: less padding and gap give each day cell more width (see CalendarDayCell).
+@media (max-width: 379px) {
+  .calendar {
+    padding: var(--space-2);
+  }
+
+  .calendar__weekdays,
+  .calendar__grid {
+    gap: 4px;
+  }
+
+  .calendar__weekdays {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 340px) {
+  .schedule {
+    padding-right: var(--space-4);
+    padding-left: var(--space-4);
+  }
+
+  .calendar {
+    padding: 6px;
+  }
+
+  .calendar__weekdays,
+  .calendar__grid {
+    gap: 3px;
+  }
+}
+
 .calendar__placeholder {
   height: 340px;
   border-radius: var(--radius-small);
@@ -235,7 +260,6 @@ const WEEKDAYS = [
 }
 
 .legend__code {
-  margin-left: auto;
   color: var(--color-text-muted);
   font-size: 11px;
   font-weight: 700;

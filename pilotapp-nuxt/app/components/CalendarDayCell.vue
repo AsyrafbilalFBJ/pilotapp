@@ -124,4 +124,61 @@ const description = computed(() => {
   color: #fff;
   box-shadow: none;
 }
+
+// Narrow phones (360–379px wide): smaller text so number, badge and base code fit one cell.
+@media (max-width: 379px) {
+  .day {
+    min-height: 54px;
+    padding: 5px 3px;
+  }
+
+  .day__top {
+    gap: 1px;
+  }
+
+  .day__number {
+    font-size: 11px;
+  }
+
+  .day__base {
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+
+  .day__status {
+    min-width: 14px;
+    height: 14px;
+    padding: 0 3px;
+    font-size: 9px;
+  }
+}
+
+// Smallest phones (up to 340px wide, e.g. 320px).
+@media (max-width: 340px) {
+  .day {
+    min-height: 48px;
+    padding: 4px 2px;
+    border-width: 1px;
+  }
+
+  .day__number {
+    font-size: 10px;
+  }
+
+  .day__base {
+    font-size: 8px;
+  }
+
+  .day__status {
+    min-width: 12px;
+    height: 12px;
+    padding: 0 2px;
+    font-size: 8px;
+
+    svg {
+      width: 8px;
+      height: 8px;
+    }
+  }
+}
 </style>

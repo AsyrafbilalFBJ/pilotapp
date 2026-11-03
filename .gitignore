@@ -57,10 +57,3 @@ dist/
 coverage/
 
 .env
-
-/requirements
-
-.kiro
-
-/assets
-/datasource

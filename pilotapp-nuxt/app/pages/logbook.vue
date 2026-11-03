@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { FlightHoursRange } from '~/types/api'
+import type { DateRange } from '~/composables/useFlightHours'
 
 useHead({ title: 'Logbook · Susi Air Pilot' })
 
-const api = useApi()
 const today = useToday()
 
 // Default range: the 1st of today's month up to today.
@@ -11,13 +10,9 @@ const from = ref(firstOfMonth(today.value))
 const to = ref(today.value)
 
 /** The range last sent to the API; the form fields only apply when "Show hours" is pressed. */
-const applied = ref({ from: from.value, to: to.value })
+const applied = ref<DateRange>({ from: from.value, to: to.value })
 
-const logbook = useAsyncData(
-  'logbook',
-  () => api<FlightHoursRange>('/flight-hours', { query: applied.value }),
-  { watch: [applied] },
-)
+const logbook = useFlightHours(applied)
 
 const loading = computed(() => logbook.status.value === 'pending')
 const data = computed(() => logbook.data.value)

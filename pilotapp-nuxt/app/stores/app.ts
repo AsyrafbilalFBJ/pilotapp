@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia'
-import type { HealthResponse } from '~/types/api'
-
 type AppStatus = 'idle' | 'loading' | 'ready' | 'error'
 
 /**
@@ -13,11 +11,11 @@ export const useAppStore = defineStore('app', () => {
   const errorMessage = ref<string | null>(null)
 
   async function load(): Promise<void> {
-    const api = useApi()
+    const { getHealth } = useHealthApi()
     status.value = 'loading'
     errorMessage.value = null
     try {
-      const health = await api<HealthResponse>('/health')
+      const health = await getHealth()
       if (health.status !== 'ok') {
         throw new Error('The service reported it is not ready.')
       }

@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import type { DocumentsResponse, FlightHoursSummary, PilotProfile, SummaryRange } from '~/types/api'
+import type { SummaryRange } from '~/types/api'
 
 useHead({ title: 'Home · Susi Air Pilot' })
 
-const api = useApi()
 const range = ref<SummaryRange>('1w')
 
-const pilot = useAsyncData('pilot', () => api<PilotProfile>('/pilot/me'))
-
-// Refetches when the toggle changes; the previous chart stays on screen meanwhile.
-const summary = useAsyncData(
-  'flight-hours-summary',
-  () => api<FlightHoursSummary>('/flight-hours/summary', { query: { range: range.value } }),
-  { watch: [range] },
-)
-
-const documents = useAsyncData('documents', () => api<DocumentsResponse>('/documents'))
+const pilot = usePilotProfile()
+const summary = useFlightHoursSummary(range)
+const documents = useDocuments()
 
 const summaryLoading = computed(() => summary.status.value === 'pending')
 </script>

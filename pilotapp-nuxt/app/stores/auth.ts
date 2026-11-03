@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { LoginRequest, LoginResponse } from '~/types/api'
+import type { LoginRequest } from '~/types/api'
 
 const TOKEN_COOKIE = 'pilot_token'
 
@@ -19,8 +19,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   /** Throws the API error on failure so the Sign In page can show its message. */
   async function login(credentials: LoginRequest): Promise<void> {
-    const api = useApi()
-    const response = await api<LoginResponse>('/auth/login', { method: 'POST', body: credentials })
+    const { login: requestToken } = useAuthApi()
+    const response = await requestToken(credentials)
     tokenCookie.value = response.token
   }
 
