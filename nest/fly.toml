@@ -1,6 +1,6 @@
-# fly.toml app configuration file generated for pilotapp on 2026-11-03T17:15:56Z
+# fly.toml app configuration file generated for pilotapp on 2026-11-03T17:54:39Z
 #
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+# See https://docs.fly.io/reference/configuration for information about how to use this file.
 #
 
 app = 'pilotapp'
@@ -9,7 +9,7 @@ primary_region = 'sin'
 [build]
 
 [http_service]
-  internal_port = 3001
+  internal_port = 3000
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
