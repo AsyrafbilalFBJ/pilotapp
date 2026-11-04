@@ -5,7 +5,7 @@ A mobile web app for Susi Air pilots: view the schedule, log flight hours, and t
 | Part | Folder | Technology | Local port |
 | --- | --- | --- | --- |
 | Backend (REST API) | [`nest/`](nest) | NestJS 12, TypeScript, JWT | 3001 |
-| Frontend | [`nuxt/`](nuxt) | Nuxt 4, Vue 3 (Composition API, `<script setup>`), Pinia, SCSS, TypeScript | 3000 |
+| Frontend | [`nuxt/`](nuxt) | Nuxt 3 (3.21), Vue 3 (Composition API, `<script setup>`), Pinia, SCSS, TypeScript | 3000 |
 
 Screens: Sign In, Home (Hours to Limit and My Documents), Schedule, Logbook, and More. All data comes from the API; the frontend keeps no mock data. The data comes from three JSON files that the backend loads into memory at startup, with no database.
 
@@ -78,6 +78,8 @@ Open `http://localhost:3000` and sign in with:
 - **Username:** `johndoe`
 - **Password:** `susiairtest`
 
+Or press **Fill in demo account** on the Sign In page to fill both fields.
+
 If the backend is not running, the frontend shows a "Can't reach the Pilot App service" screen with a Try again button.
 
 ---
@@ -137,7 +139,7 @@ This table covers the decisions made together, the decisions made alone, how poi
 | **Frontend is an SPA (`ssr: false`), token in a session cookie** | Every screen needs a sign-in and the token lives in the browser. The cookie keeps the pilot signed in after a reload, and a 401 response clears the token and sends the pilot to Sign In |
 | **The `/flight-hours` range is limited to 731 days** | Stops a single request from asking for unbounded data |
 | **Backend additions beyond the brief** | `GET /health`, Swagger at `/docs`, env validation at boot, a uniform error shape (`{ statusCode, message, error, timestamp, path }`), 50 unit tests and 33 e2e tests |
-| **Frontend additions beyond the brief** | A startup error screen when the API is down, the Schedule month kept in the URL (`?year&month`) so the back button from the detail page stays on the same month, a `/schedule/<date>` placeholder page, an extended legend, a Try again button in each section, and accessibility attributes |
+| **Frontend additions beyond the brief** | A demo account card with a fill-in button and a show/hide password toggle on Sign In, a startup error screen when the API is down, the Schedule month kept in the URL (`?year&month`) so the back button from the detail page stays on the same month, a `/schedule/<date>` placeholder page, an extended legend, a Try again button in each section, and accessibility attributes |
 
 ---
 
@@ -193,7 +195,7 @@ When the app opens, the frontend calls `GET /health` first. A user who is not si
 
 | Route | Page | Login | API data | Page content |
 | --- | --- | --- | --- | --- |
-| `/login` | **Sign In** | No | `POST /auth/login` | Username and password form. Wrong credentials show the message "Invalid username or password" |
+| `/login` | **Sign In** | No | `POST /auth/login` | Username and password form with a show/hide password toggle. Wrong credentials show the message "Invalid username or password". Below the Sign in button, a **Demo account** card shows the username and password, and its **Fill in demo account** button fills both fields (the pilot still presses Sign in) |
 | `/` | **Home** | Yes | `/pilot/me`, `/flight-hours/summary`, `/documents` | Header (greeting, name, total flight hours, avatar). **Hours to limit**: 4 limit cards and a rolling sum chart with a `1w`, `1m`, `3m`, `6m`, `1y` toggle (default `1w`), a red limit line, and a dashed planned section. **My Documents**: a list of documents with a Safe, Expiring Soon, or Expired badge |
 | `/schedule` | **Schedule** | Yes | `/schedules` | Monthly calendar with previous and next month buttons (each change calls the API). Days are coloured by the duty's `base_color`, with a ✓ when every duty is logged or the number of remaining duties otherwise, a ring on today, and a legend below. The month is kept in the URL (`?year=2026&month=6`) |
 | `/schedule/<YYYY-MM-DD>` | **Day detail** (placeholder) | Yes | - | The text "Detail page coming soon" and a button back to the previous month. Opened by tapping a date in the calendar |
