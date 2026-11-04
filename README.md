@@ -11,6 +11,17 @@ Screens: Sign In, Home (Hours to Limit and My Documents), Schedule, Logbook, and
 
 ---
 
+## URLs
+
+| Name | URL |
+| --- | --- |
+| GitHub Repository | https://github.com/AsyrafbilalFBJ/pilotapp |
+| UI URL | https://pilotapp-zeta.vercel.app |
+| API URL | https://pilotapp-production-f916.up.railway.app |
+| API Documentation | https://pilotapp-production-f916.up.railway.app/docs |
+
+---
+
 ## 1. Install and run locally
 
 **Prerequisites:** Node.js 22 or newer, and npm. Run the backend and the frontend in two separate terminals, and start with the backend.
