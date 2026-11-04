@@ -1,4 +1,6 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// https://nuxt.com/docs/3.x/api/configuration/nuxt-config
+// Nuxt 3 project. Source folders (pages/, components/, composables/, ...) live at the
+// project root, which is the default Nuxt 3 layout.
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },

@@ -1,75 +1,61 @@
-# Nuxt Minimal Starter
+# Susi Air Pilot App — Frontend (Nuxt 3)
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Nuxt 3 version of the frontend. Pages, components, composables, stores and styles are the same as in [`../nuxt`](../nuxt) (Nuxt 4); only the framework version and the folder layout differ.
 
-## Setup
+| | `nuxt/` | `nuxt3/` |
+| --- | --- | --- |
+| Nuxt | 4.6.3 | 3.21.11 |
+| Source folders | inside `app/` | at the project root (standard Nuxt 3 layout) |
+| Pinia | `pinia` 4 + `@pinia/nuxt` 1.0.3 | `pinia` 3 + `@pinia/nuxt` 0.11.2 (last release for Nuxt 3) |
+| vue-router | listed in `package.json` (v5) | not listed; Nuxt 3 ships vue-router 4 |
+| TypeScript | 6.x | 5.9 |
 
-Make sure to install dependencies:
+## Install and run locally (port 3000)
 
-```bash
-# npm
+Start the backend first (`../nest`, port 3001).
+
+```powershell
+cd nuxt3
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+copy .env.example .env     # NUXT_PUBLIC_API_BASE=http://localhost:3001
+npm run dev                # development mode, http://localhost:3000
 ```
 
-## Development Server
+Build and run the production version:
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
+```powershell
 npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+$env:PORT='3000'; node .output/server/index.mjs
 ```
 
-Locally preview production build:
+Type check: `npm run typecheck`.
 
-```bash
-# npm
-npm run preview
+Sign in with `johndoe` / `susiairtest`, or press **Fill in demo account** on the Sign In page.
 
-# pnpm
-pnpm preview
+## Environment variables
 
-# yarn
-yarn preview
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `NUXT_PUBLIC_API_BASE` | `http://localhost:3001` | Backend address |
 
-# bun
-bun run preview
+## Folder layout
+
+```
+nuxt3/
+├─ app.vue              loads GET /health, then the layout and page; error screen if the API is down
+├─ assets/styles/       design tokens and base styles
+├─ components/          UI components
+├─ composables/         one composable per API endpoint, plus useApi and useToday
+├─ layouts/             default (with bottom navigation), bare (Sign In)
+├─ middleware/          auth.global.ts redirects to /login without a token
+├─ pages/               login, index (Home), schedule/, logbook, more
+├─ plugins/api.ts       shared $fetch client: base URL, Bearer token, 401 → Sign In
+├─ public/assets/       Susi Air logo
+├─ stores/              Pinia: app (today from /health), auth (token)
+├─ types/api.ts         API response types
+└─ utils/               API error messages, calendar request params, readable text colour
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Behaviour difference from `nuxt/`
+
+Opening **More** after **Home** calls `GET /pilot/me` again in this version. In the Nuxt 4 version the profile already loaded on Home is reused. The page shows the same data either way.
